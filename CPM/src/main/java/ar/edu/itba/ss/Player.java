@@ -12,6 +12,10 @@ public abstract class Player {
     private Vector2D velocity;
     private Vector2D goal;
     private final Field field;
+    private final double Ap = 1;
+    private final double Bp = 1;
+
+    private Vector2D nextVelocity;
 
     public Player(double tau, double minRadius, double maxRadius, double maxSpeed, double beta, Field field) {
         this.tau = tau;
@@ -109,4 +113,39 @@ public abstract class Player {
             return false;
         return true;
     }
+
+    public double getScapeSpeed() {
+        return getMaxSpeed();
+    }
+
+    public double getTargetedSpeed() {
+        double speed = getMaxSpeed()
+                * Math.pow((getRadius() - getMinRadius()) / (getMaxRadius() - getMinRadius()), getBeta());
+        return speed;
+
+    }
+
+    public void computeNextVelocity(Vector2D direction, double magnitude) {
+        nextVelocity = direction.multiply(magnitude);
+    }
+
+    public void updateVelocity() {
+        velocity = nextVelocity;
+    }
+
+    public void updatePosition() {
+        Vector2D newPosition = position.add(velocity.multiply(field.getDt()));
+        setPosition(newPosition);
+    }
+
+    public abstract Vector2D getGoalDirection();
+
+    public double getAp() {
+        return Ap;
+    }
+
+    public double getBp() {
+        return Bp;
+    }
+
 }

@@ -28,15 +28,24 @@ public class PlayerCollision implements Collision {
         return normal.versor();
     }
 
+    public void adjustRadii() {
+        player1.setRadius(player1.getMinRadius());
+        player2.setRadius(player2.getMinRadius());
+    }
+
     public void adjustRadii(Player maradona) {
         if (player1.equals(maradona)) {
             player1.setRadius(player1.getMinRadius());
+
             return;
         } else if (player2.equals(maradona)) {
             player2.setRadius(player2.getMinRadius());
             return;
         }
-        player1.setRadius(player1.getMinRadius());
-        player2.setRadius(player2.getMinRadius());
+        adjustRadii();
+    }
+
+    public boolean isPlayerInvolved(Player player) {
+        return player.equals(player1) || player.equals(player2);
     }
 }

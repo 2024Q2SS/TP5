@@ -23,4 +23,12 @@ public class WallCollision implements Collision {
         Vector2D normal = player.getPosition().subtract(wallPoint);
         return normal.versor();
     }
+
+    public void adjustRadii() {
+        player.setRadius(player.getMinRadius());
+    }
+
+    public boolean isPlayerInvolved(Player player) {
+        return player.equals(this.player);
+    }
 }

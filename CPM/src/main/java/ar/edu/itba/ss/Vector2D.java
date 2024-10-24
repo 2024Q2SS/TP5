@@ -43,6 +43,18 @@ public class Vector2D {
         return new Vector2D(x - other.x, y - other.y);
     }
 
+    public Vector2D add(Vector2D other) {
+        return new Vector2D(x + other.x, y + other.y);
+    }
+
+    public Vector2D multiply(double scalar) {
+        return new Vector2D(x * scalar, y * scalar);
+    }
+
+    public double dot(Vector2D other) {
+        return x * other.x + y * other.y;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -70,4 +82,10 @@ public class Vector2D {
             return false;
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "Vector2D [x=" + x + ", y=" + y + "]";
+    }
+
 }
