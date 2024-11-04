@@ -4,15 +4,28 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class Maradona extends Player {
+    private double Ap = 1;
+    private double Bp = 1;
 
-    public Maradona(double tau, double minRadius, double maxRadius, double maxSpeed, double beta, Field field) {
+    public double getAp() {
+        return Ap;
+    }
+
+    public double getBp() {
+        return Bp;
+    }
+
+    public Maradona(double tau, double minRadius, double maxRadius, double maxSpeed, double beta, double a, double b,
+            Field field) {
         super(tau, minRadius, maxRadius, maxSpeed, beta, field);
+        this.Ap = a;
+        this.Bp = b;
     }
 
     @Override
     public void initialize() {
         // set position
-        setPosition(new Vector2D(this.getField().getFieldWidth() - 2 * this.getMinRadius(),
+        setPosition(new Vector2D(this.getField().getFieldWidth() - this.getMinRadius(),
                 this.getField().getFieldHeight() / 2));
         setVelocity(new Vector2D(0, 0));
         setGoal(new Vector2D(0, getPosition().getY()));
@@ -20,6 +33,7 @@ public class Maradona extends Player {
 
     }
 
+    // TODO: AGREGAR PAREDES ?
     public Vector2D getGoalDirection() {
         Vector2D tempGoal = getGoal().subtract(getPosition()).versor();
         double velocityModule = getVelocity().module();
@@ -47,20 +61,19 @@ public class Maradona extends Player {
                 obstaclesInFront.add(player);
             }
         }
-        if (obstaclesInFront.isEmpty()) {
-            return tempGoal;
+        Vector2D obstacleSum = Vector2D.ZERO();
+        for (Player obstacle : obstaclesInFront) {
+            Vector2D obstacleDirectionVersor = this.getPosition().subtract(obstacle.getPosition()).versor();
+            double distance = this.distanceTo(obstacle);
+            double multiplier = this.getAp() * Math.exp(-distance / this.getBp());
+            Vector2D ncVector = obstacleDirectionVersor.multiply(multiplier);
+            obstacleSum = obstacleSum.add(ncVector);
         }
-
-        obstaclesInFront.sort((a, b) -> a.distanceTo(this) < b.distanceTo(this) ? -1 : 1);
-        Player obstacle = obstaclesInFront.get(0);
-        Vector2D obstacleDir = obstacle.getPosition().subtract(getPosition());
-        Vector2D obstacleDirVersor = obstacleDir.versor();
-        double distance = distanceTo(obstacle);
-        double dotProduct = getVelocity().dot(obstacleDir);
-        double cosThetaJ = dotProduct / (distance * velocityModule);
-        double multiplier = getAp() * Math.exp(-distance / getBp()) * cosThetaJ;
-        tempGoal = tempGoal.subtract(obstacleDirVersor.multiply(multiplier));
-
+        tempGoal = tempGoal.add(obstacleSum);
         return tempGoal.versor();
+    }
+
+    private double distanceWithMinRadius(Player player) {
+        return this.getPosition().distance(player.getPosition()) - this.getMinRadius() - player.getMinRadius();
     }
 }

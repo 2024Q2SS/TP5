@@ -11,10 +11,12 @@ public class Config {
     private double redMaxSpeed;
     private int blueN;
     private double beta;
+    private double a;
+    private double b;
 
     public Config(double fieldWidth, double fieldHeight, double minRadius, double maxRadius, double blueTau,
             double redTau,
-            double blueMaxSpeed, double redMaxSpeed, int blueN, double beta) {
+            double blueMaxSpeed, double redMaxSpeed, int blueN, double beta, double a, double b) {
         this.fieldWidth = fieldWidth;
         this.fieldHeight = fieldHeight;
         this.minRadius = minRadius;
@@ -25,6 +27,24 @@ public class Config {
         this.redMaxSpeed = redMaxSpeed;
         this.blueN = blueN;
         this.beta = beta;
+        this.a = a;
+        this.b = b;
+    }
+
+    public double getA() {
+        return a;
+    }
+
+    public void setA(double a) {
+        this.a = a;
+    }
+
+    public double getB() {
+        return b;
+    }
+
+    public void setB(double b) {
+        this.b = b;
     }
 
     public double getFieldWidth() {

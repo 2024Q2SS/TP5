@@ -2,8 +2,12 @@ package ar.edu.itba.ss;
 
 public class Vector2D {
 
-    public double x;
-    public double y;
+    private double x;
+    private double y;
+
+    public static final Vector2D ZERO() {
+        return new Vector2D(0, 0);
+    }
 
     public Vector2D(double x, double y) {
         this.x = x;

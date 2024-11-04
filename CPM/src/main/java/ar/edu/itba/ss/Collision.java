@@ -7,4 +7,6 @@ public interface Collision {
     public void adjustRadii();
 
     public boolean isPlayerInvolved(Player player);
+
+    public Vector2D getRelativeNormalDirection(Player player);
 }

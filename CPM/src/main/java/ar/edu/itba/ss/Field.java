@@ -18,7 +18,7 @@ public class Field {
         this.fieldWidth = conf.getFieldWidth();
         this.fieldHeight = conf.getFieldHeight();
         maradona = new Maradona(conf.getRedTau(), conf.getMinRadius(), conf.getMaxRadius(), conf.getRedMaxSpeed(),
-                conf.getBeta(),
+                conf.getBeta(), conf.getA(), conf.getB(),
                 this);
         dt = conf.getMinRadius() / (conf.getRedMaxSpeed() * 2);
 
@@ -50,13 +50,12 @@ public class Field {
 
     public boolean finishConditionsMet() {
 
-        if (maradona.getPosition().getX() - maradona.getMinRadius() <= 0) {
+        if (maradona.getPosition().getX() - maradona.getRadius() <= 0) {
             System.out.println("Mardona hizo try");
             return true;
         }
         for (Player player : players) {
-            if (player.getPosition().distance(maradona.getPosition()) - player.getMinRadius()
-                    - maradona.getMinRadius() <= 0) {
+            if (player.distanceTo(maradona) <= 0) {
                 System.out.println("Lo taclearon a maradona");
                 return true;
             }
@@ -123,6 +122,7 @@ public class Field {
                         if (player != other) {
                             double distance = player.distanceTo(other);
                             if (distance < 0) {
+                                System.out.println("COLLISION");
                                 Collision collision = new PlayerCollision(player, other, time);
                                 collisions.add(collision);
                                 playersNotColliding.remove(player);
@@ -136,7 +136,6 @@ public class Field {
                         Collision collision = new PlayerCollision(player, maradona, time);
                         collisions.add(collision);
                         playersNotColliding.remove(maradona);
-                        System.out.println("Maradona colisiono con un jugador");
 
                     }
                 }
@@ -147,7 +146,6 @@ public class Field {
                             new Vector2D(maradona.getPosition().getX(), fieldHeight), time);
                     collisions.add(wallCollision);
                     playersNotColliding.remove(maradona);
-                    System.out.println("Maradona colisiono con la pared de arriba");
 
                 }
 
@@ -158,7 +156,6 @@ public class Field {
                             time);
                     collisions.add(wallCollision);
                     playersNotColliding.remove(maradona);
-                    System.out.println("Maradona colisiono con la pared de abajo");
                 }
 
                 // check right wall
@@ -167,7 +164,6 @@ public class Field {
                             new Vector2D(fieldWidth, maradona.getPosition().getY()), time);
                     collisions.add(wallCollision);
                     playersNotColliding.remove(maradona);
-                    System.out.println("Maradona colisiono con la pared de la derecha");
                 }
                 // Iteration 2: Adjust radii
                 for (Collision collision : collisions) {
@@ -191,12 +187,16 @@ public class Field {
                 auxList.removeAll(playersNotColliding);
                 for (Player player : auxList) {
                     Vector2D direction = new Vector2D(0, 0);
+                    System.out.println("Player colliding: " + player);
                     double magnitude = player.getScapeSpeed();
                     for (Collision collision : collisions) {
                         if (collision.isPlayerInvolved(player)) {
-                            direction.add(collision.getNormalDirection());
+                            direction = direction.add(collision.getRelativeNormalDirection(player));
+
                         }
                     }
+                    System.out.println(direction);
+
                     player.computeNextVelocity(direction.versor(), magnitude);
                 }
                 // MARADONA COLLISION CALCULATION
@@ -205,10 +205,9 @@ public class Field {
                     double magnitude = maradona.getScapeSpeed();
                     for (Collision collision : collisions) {
                         if (collision.isPlayerInvolved(maradona)) {
-                            direction.add(collision.getNormalDirection());
+                            direction = direction.add(collision.getRelativeNormalDirection(maradona));
                         }
                     }
-                    System.out.println(direction);
                     maradona.computeNextVelocity(direction.versor(), magnitude);
                 }
                 // Iteration 4: update velocity and speed

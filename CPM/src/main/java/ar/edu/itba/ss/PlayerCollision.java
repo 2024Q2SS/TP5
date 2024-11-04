@@ -23,6 +23,16 @@ public class PlayerCollision implements Collision {
         return time;
     }
 
+    public Vector2D getRelativeNormalDirection(Player player) {
+        if (player.equals(player1)) {
+            return player1.getPosition().subtract(player2.getPosition()).versor();
+        } else if (player.equals(player2)) {
+            return player2.getPosition().subtract(player1.getPosition()).versor();
+        }
+        return Vector2D.ZERO();
+
+    }
+
     public Vector2D getNormalDirection() {
         Vector2D normal = player1.getPosition().subtract(player2.getPosition());
         return normal.versor();

@@ -31,4 +31,12 @@ public class WallCollision implements Collision {
     public boolean isPlayerInvolved(Player player) {
         return player.equals(this.player);
     }
+
+    public Vector2D getRelativeNormalDirection(Player player) {
+        if (player.equals(this.player)) {
+            return player.getPosition().subtract(wallPoint).versor();
+        }
+        return Vector2D.ZERO();
+    }
+
 }

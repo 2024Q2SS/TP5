@@ -12,8 +12,6 @@ public abstract class Player {
     private Vector2D velocity;
     private Vector2D goal;
     private final Field field;
-    private final double Ap = 1;
-    private final double Bp = 1;
 
     private Vector2D nextVelocity;
 
@@ -139,13 +137,4 @@ public abstract class Player {
     }
 
     public abstract Vector2D getGoalDirection();
-
-    public double getAp() {
-        return Ap;
-    }
-
-    public double getBp() {
-        return Bp;
-    }
-
 }
