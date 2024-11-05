@@ -75,10 +75,12 @@ public class Field {
         try (FileWriter fw = new FileWriter("output.csv")) {
             fw.write(builder.toString());
             builder.setLength(0);
-            builder.append(time + "," + maradona.getPosition().getX() + "," + maradona.getPosition().getY() + ","
+            builder.append(time + "," + maradona.getPosition().getX() + "," +
+                    maradona.getPosition().getY() + ","
                     + maradona.getRadius());
             for (Player player : players) {
-                builder.append("," + player.getPosition().getX() + "," + player.getPosition().getY() + ","
+                builder.append("," + player.getPosition().getX() + "," +
+                        player.getPosition().getY() + ","
                         + player.getRadius());
             }
             builder.append("\n");
@@ -122,7 +124,7 @@ public class Field {
                         if (player != other) {
                             double distance = player.distanceTo(other);
                             if (distance < 0) {
-                                System.out.println("COLLISION");
+                                // System.out.println("COLLISION");
                                 Collision collision = new PlayerCollision(player, other, time);
                                 collisions.add(collision);
                                 playersNotColliding.remove(player);
@@ -187,7 +189,7 @@ public class Field {
                 auxList.removeAll(playersNotColliding);
                 for (Player player : auxList) {
                     Vector2D direction = new Vector2D(0, 0);
-                    System.out.println("Player colliding: " + player);
+                    // System.out.println("Player colliding: " + player);
                     double magnitude = player.getScapeSpeed();
                     for (Collision collision : collisions) {
                         if (collision.isPlayerInvolved(player)) {
@@ -195,7 +197,7 @@ public class Field {
 
                         }
                     }
-                    System.out.println(direction);
+                    // System.out.println(direction);
 
                     player.computeNextVelocity(direction.versor(), magnitude);
                 }
@@ -226,10 +228,12 @@ public class Field {
                 maradona.setGoal(new Vector2D(0, maradona.getPosition().getY()));
 
                 builder.setLength(0);
-                builder.append(time + "," + maradona.getPosition().getX() + "," + maradona.getPosition().getY() + ","
+                builder.append(time + "," + maradona.getPosition().getX() + "," +
+                        maradona.getPosition().getY() + ","
                         + maradona.getRadius());
                 for (Player player : players) {
-                    builder.append("," + player.getPosition().getX() + "," + player.getPosition().getY() + ","
+                    builder.append("," + player.getPosition().getX() + "," +
+                            player.getPosition().getY() + ","
                             + player.getRadius());
                 }
                 builder.append("\n");
@@ -237,7 +241,6 @@ public class Field {
             }
         } catch (Exception e) {
             e.printStackTrace();
-
         }
     }
 }

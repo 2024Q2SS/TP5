@@ -1,21 +1,18 @@
 #!/bin/bash
 
 # Carpeta de destino para los archivos output.csv
-OUTPUT_FOLDER="./multiple_n_outputs/"
+OUTPUT_FOLDER="./new_multiple_n_outputs/"
 # Carpeta donde se encuentra el archivo config.json
 CONFIG_FOLDER="."
 # Carpeta donde se debe ejecutar el comando Maven
 CPM_FOLDER="./CPM/"
 
 # Valores de 'n' para iterar
-declare -a n_values=(15 30 45 60 75 90 100)  # Añade aquí los valores de 'n' que necesitas
+declare -a n_values=(20 25)  # Añade aquí los valores de 'n' que necesitas
 
 # Combinaciones específicas de 'a' y 'b' para cada valor de 'n'
-declare -a a_values=(4 6)
-declare -a b_values=(1 0.5)
-
-# Número de ejecuciones por cada combinación de valores de a, b y n
-NUM_RUNS=100
+declare -a a_values=(0.5 0.5)
+declare -a b_values=(4 6)
 
 # Función para actualizar los valores de 'a', 'b' y 'blueN' en config.json
 update_config() {
@@ -53,27 +50,21 @@ for n in "${n_values[@]}"; do
     mkdir -p "$RESULT_FOLDER"
 
 
-    # Ejecuta el comando de Maven NUM_RUNS veces para este par de valores de a y b y para el valor de n
-    for ((i=1; i<=NUM_RUNS; i++)); do
-      echo "Ejecución $i para a=$a, b=$b, y n=$n"
-
       # Cambia a la carpeta CPM y ejecuta Maven
       cd "$CPM_FOLDER" || { echo "Error: no se pudo acceder a $CPM_FOLDER"; exit 1; }
-      MAVEN_OPTS="-Xmx8g" mvn exec:java -Dexec.mainClass="ar.edu.itba.ss.App"
+      MAVEN_OPTS="-Xmx8g" mvn exec:java -Dexec.mainClass="ar.edu.itba.ss.App2"
 
       # Regresa a la carpeta inicial después de ejecutar Maven
       cd - >/dev/null
 
-
       # Verifica si output.csv fue generado en la carpeta CPM y muévelo a la carpeta de destino con un nombre único
-      if [ -f "$CPM_FOLDER/output.csv" ]; then
-        mv "$CPM_FOLDER/output.csv" "$RESULT_FOLDER/output_${i}.csv"
-        echo "output.csv movido a $RESULT_FOLDER/output_${i}.csv"
+      if [ -f "$CPM_FOLDER/obs_output.csv" ]; then
+        mv "$CPM_FOLDER/obs_output.csv" "$RESULT_FOLDER/output.csv"
+        echo "obs_output.csv movido a $RESULT_FOLDER/output.csv"
       else
         echo "Error: output.csv no se encontró después de la ejecución $i para a=$a, b=$b, y n=$n."
         break
       fi
     done
   done
-done
 

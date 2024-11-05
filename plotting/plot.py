@@ -1,5 +1,5 @@
-import os
 import glob
+import os
 
 
 def remove_files_with_pattern(folder_path, pattern):
@@ -23,11 +23,11 @@ folder_path = "blob"  # Replace with your folder path
 pattern = "*"  # Replace with your desired pattern (e.g., '*.jpg', '*.log', etc.)
 remove_files_with_pattern(folder_path, pattern)
 
-import pandas as pd
 import matplotlib.pyplot as plt
+import pandas as pd
 
 # Cargar datos desde el CSV
-df = pd.read_csv("../sorted_outputs/a_4_b_1/output_43.csv")
+df = pd.read_csv("../CPM/output.csv")
 df.columns = df.columns.str.strip()
 print(df.head())
 
