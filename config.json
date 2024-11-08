@@ -1,14 +1,14 @@
 {
   "fieldWidth": 100,
   "fieldHeight": 70,
-  "blueN": 15,
+  "blueN": 30,
   "redTau": 0.3,
   "blueTau": 0.5,
   "minRadius": 0.15,
   "maxRadius": 0.32,
   "blueMaxSpeed": 3.8,
-  "redMaxSpeed": 4,
+  "redMaxSpeed": 5,
   "beta": 0.9,
-  "a": 0.5,
-  "b": 6
+  "a": 1,
+  "b": 4
 }

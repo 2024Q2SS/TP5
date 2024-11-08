@@ -61,6 +61,7 @@ public class Maradona extends Player {
                 obstaclesInFront.add(player);
             }
         }
+
         Vector2D obstacleSum = Vector2D.ZERO();
         for (Player obstacle : obstaclesInFront) {
             Vector2D obstacleDirectionVersor = this.getPosition().subtract(obstacle.getPosition()).versor();

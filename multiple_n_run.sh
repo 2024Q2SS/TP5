@@ -8,11 +8,11 @@ CONFIG_FOLDER="."
 CPM_FOLDER="./CPM/"
 
 # Valores de 'n' para iterar
-declare -a n_values=(20 25)  # Añade aquí los valores de 'n' que necesitas
+declare -a n_values=(15 20 25 30 45 60 75 90 100)  # Añade aquí los valores de 'n' que necesitas
 
 # Combinaciones específicas de 'a' y 'b' para cada valor de 'n'
-declare -a a_values=(0.5 0.5)
-declare -a b_values=(4 6)
+declare -a a_values=(1)
+declare -a b_values=(4)
 
 # Función para actualizar los valores de 'a', 'b' y 'blueN' en config.json
 update_config() {
